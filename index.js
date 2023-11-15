@@ -7,9 +7,9 @@ import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
-import authRoutes from './routes/auth/auth.js';
-// import adminRoutes from './routes/admin/admin.js';
-// import usersRoutes from './routes/users/users.js';
+import authRoutes from './routes/auth.js';
+import usersRoutes from './routes/users.js';
+// import adminRoutes from './routes/admin.js';
 
 import { get404, get500 } from './controllers/error.js';
 
@@ -24,8 +24,8 @@ const PORT = process.env.PORT || 5000;
 app.use(fileUpload());
 app.use(bodyParser.json());
 
+app.use('/api', usersRoutes);
 app.use('/api/auth', authRoutes);
-// app.use('/api/users', usersRoutes);
 // app.use('/api/admin', adminRoutes);
 app.use('/api/uploads', express.static('uploads'));
 

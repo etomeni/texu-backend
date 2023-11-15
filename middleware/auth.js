@@ -1,8 +1,6 @@
 import Jwt  from "jsonwebtoken";
 import envData  from './../config/env.js';
 
-// import { checkUsersPendingOrders } from './orderCheck.js'
-
 export default async (req, res, next) => {
     try {
         const authHeader = req.get('Authorization');
@@ -50,8 +48,6 @@ export default async (req, res, next) => {
         req.userID = decodedToken.userID;
         req.email = decodedToken.email;
         req.username = decodedToken.username;
-    
-        checkUsersPendingOrders(req);
     
         next();
     } catch (error) {

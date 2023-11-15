@@ -11,7 +11,7 @@ import Jwt  from "jsonwebtoken";
 const router = express.Router();
 
 // Models
-import { auth, crud, general } from '../../models/firebase.js';
+import { auth, crud, general } from '../models/firebase.js';
 
 
 // Controllers
@@ -23,10 +23,10 @@ import {
     sendPasswordResetEmailCtr,
     verifyEmailTokenCtr,
     resetPasswordCtr
-} from '../../controllers/authController.js';
+} from '../controllers/authController.js';
 
 // middleWares
-import authMiddleware from '../../middleware/auth.js'
+import authMiddleware from '../middleware/auth.js'
 
 
 router.use(bodyParser.json());
@@ -66,7 +66,6 @@ router.post(
         .normalizeEmail(),
 
         // body('phoneNumber').trim().not().isEmpty(),
-
         body('password').trim().isLength({ min: 5}).not().isEmpty(),
         body('type_of_user').trim().not().isEmpty(),
         // body('no_of_uploads').trim().isLength({ min: 5}).not().isEmpty(),

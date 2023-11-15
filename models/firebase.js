@@ -47,7 +47,7 @@ export class auth {
 
     // auth
     static signupFireAuth (value) {
-        return new Promise<any> ( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             createUserWithEmailAndPassword(fireAuth, value.email, value.password).then (
                 (res)=>resolve(res),
                 (err)=>reject(err)
@@ -56,7 +56,7 @@ export class auth {
     }
 
     static loginFireAuth(value) {
-        return new Promise<any> ( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             signInWithEmailAndPassword(fireAuth, value.email, value.password).then(
                 res=>resolve(res),
                 error=>reject(error)
@@ -65,7 +65,7 @@ export class auth {
     }
 
     static sendEmailVerificationFireAuth () {
-        return new Promise<any> ( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const currentUser = fireAuth.currentUser;
             sendEmailVerification(currentUser).then (
                 (res)=>resolve(res),
@@ -75,7 +75,7 @@ export class auth {
     }
 
     static updateUserProfileFireAuth (displayName, photoURL = '') {
-        return new Promise<any> ( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const currentUser = fireAuth.currentUser;
             let updateData;
             if(photoURL) {
@@ -100,7 +100,7 @@ export class auth {
         const currentUser = fireAuth.currentUser;
         const credential = EmailAuthProvider.credential(currentUserEmail,currentUserPassword);
     
-        return new Promise<any> ( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             reauthenticateWithCredential(currentUser, credential).then(() => {
                 // User re-authenticated.
                 updateEmail(currentUser, newEmail).then (
@@ -120,7 +120,7 @@ export class auth {
         const credential = EmailAuthProvider.credential(currentUserEmail, currentUserPassword);
         const currentUser = fireAuth.currentUser;
 
-        return new promiseCallback<any> ( (resolve, reject) => {
+        return new promiseCallback((resolve, reject) => {
             reauthenticateWithCredential(currentUser, credential).then(() => {
                 // User re-authenticated.
                 deleteUser(currentUser).then(
@@ -141,7 +141,7 @@ export class auth {
         const credential = EmailAuthProvider.credential(currentUserEmail, currentUserPassword);
         const currentUser = fireAuth.currentUser;
 
-        return new Promise<any> ( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             reauthenticateWithCredential(currentUser, credential).then(() => {
                 // User re-authenticated.
                 updatePassword(currentUser, newPassword).then (
@@ -158,7 +158,7 @@ export class auth {
     }
 
     static sendPasswordResetEmailFireAuth(email) {
-        return new Promise<any> ( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             sendPasswordResetEmail(fireAuth, email).then(
                 (res) => {
                 resolve(res || true);
@@ -237,7 +237,7 @@ export class auth {
     }
 
     static logoutFirebaseUser() {
-        return new Promise<any> ( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             signOut(fireAuth).then(
                 (res) => {
                     logOut();
@@ -274,7 +274,7 @@ export class crud {
                 setDoc(doc(collectionInstance, id), data).then((res) => {
                     // console.log("Data Saved Successfully");
                     // console.log(res);
-                    resolve(res || true);
+                    resolve({ ...res, id: id } || true);
                 }).catch((err) => {
                     console.log(err);
                     reject(err || false);
@@ -283,10 +283,10 @@ export class crud {
             } else {
                 addDoc(collectionInstance, data).then((res) => {
                     // console.log("Data Saved Successfully");
-                    updateFirestoreData(path, res.id, { id: res.id });
+                    this.updateFirestoreData(path, res.id, { id: res.id });
 
                     // console.log(res);
-                    resolve(res || true);
+                    resolve({ ...res, id: res.id } || true);
                 }).catch((err) => {
                     console.log(err);
                     reject(err || false);
@@ -354,7 +354,7 @@ export class crud {
     }
 
     static getFirestoreDocumentData(path, docId) {
-        return new Promise<any> (async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const docRef = doc(db, path, docId);
             const docSnap = await getDoc(docRef);
 
@@ -641,7 +641,7 @@ export class crud {
     }
 
     static updateFirestoreData(path, id, updateData) {
-        return new Promise<any> ((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const docInstance = doc(db, path, id);
             updateDoc(docInstance, updateData).then((res) => {
                 // console.log("Data updated" + res);
@@ -654,7 +654,7 @@ export class crud {
     }
 
     static deleteFirestoreData(path, id) {
-        return new Promise<any> ((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const docInstance = doc(db, path, id);
             deleteDoc(docInstance).then((res) => {
                 // console.log("Data deleted" + res);
@@ -677,7 +677,7 @@ export class general {
         const storage = getStorage(); // Create a child reference
         const storageRef = ref(storage, path); // 'file' comes from the Blob or File API
 
-        return new Promise<any> ( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             uploadBytes(storageRef, file).then(
                 async (snapshot) => {
                     // console.log(snapshot);
