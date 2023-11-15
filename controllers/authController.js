@@ -31,12 +31,7 @@ export const signupController = async (req, res, next) => {
         error.msg = "sent data validation error";
         next(error);
     }
-
-    const uApiKey = () => {
-        const val1 = Date.now().toString(36);
-        const val2 = Math.random().toString(36).substring(2);
-        return val1 + val2;
-    }
+    
 
     try {
         const hashedPassword = await bcryptjs.hash(req.body.password, 12);

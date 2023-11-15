@@ -11,7 +11,8 @@ import Jwt  from "jsonwebtoken";
 const router = express.Router();
 
 // Models
-import { auth } from '../../models/firebase.js';
+import { auth, crud, general } from '../../models/firebase.js';
+
 
 // Controllers
 import { 
@@ -36,30 +37,32 @@ router.post(
     [
         body('name').trim().not().isEmpty(),
 
-        body('username').trim().not().isEmpty(),
-        // .custom(async (username) => {
-        //     try {
-        //         const userExist = await auth.findUsername(username);
-        //         if (userExist[0].length > 0) {
-        //             return Promise.reject('Username already exist');
-        //         }
-        //     } catch (error) {
-        //         return Promise.reject('server error occured');
-        //     }
-        // }),
+        body('username').trim().not().isEmpty()
+        .custom(async (username) => {
+            try {
+                const userExist = await crud.getLimitedFirestoreDocumentData("users", 1, { property: "username", condition: "==", value: username });
+                if (userExist.length) {
+                    return Promise.reject('Username already exist');
+                };
+            } catch (error) {
+                return Promise.reject('server error occured');
+            }
+        }),
 
         body('email').trim()
         .isEmail().withMessage('Please enter a valid email')
-        // .custom(async (email) => {
-        //     try {
-        //         const userExist = await auth.findEmail(email);
-        //         if (userExist[0].length > 0) {
-        //             return Promise.reject('Email Address already exist!');
-        //         }
-        //     } catch (error) {
-        //         return Promise.reject('server error occured');
-        //     }
-        // })
+        .custom(async (email) => {
+            try {
+                const userExist = await crud.getLimitedFirestoreDocumentData("users", 1, { property: "email", condition: "==", value: email });
+                
+                if (userExist.length) {
+                    return Promise.reject('Email Address already exist!');
+                };
+        
+            } catch (error) {
+                return Promise.reject('server error occured');
+            }
+        })
         .normalizeEmail(),
 
         // body('phoneNumber').trim().not().isEmpty(),
