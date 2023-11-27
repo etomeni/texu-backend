@@ -18,7 +18,9 @@ const router = express.Router();
 // Controllers
 import { 
     saveLiveTvChannelsCtr,
-    getLiveTvChannelsCtr
+    getLiveTvChannelsCtr,
+    getUploadedVideosCtr,
+    setUploadedVideosCtr
 } from '../controllers/usersCtrl.js';
 
 // middleWares
@@ -47,6 +49,29 @@ router.post(
     '/getLiveTvChannels',
     // authMiddleware,
     getLiveTvChannelsCtr
+);
+
+// get Uploaded Videos
+router.post(
+    '/getUploadedVideos',
+    // authMiddleware,
+    getUploadedVideosCtr
+);
+
+// set Uploaded Videos
+router.post(
+    '/setUploadedVideos',
+    [
+        // authMiddleware,
+        body('title').trim().not().isEmpty(),
+        body('video_thumbnail').trim().not().isEmpty(),
+        body('video_file').trim().not().isEmpty(),
+        body('video_category').trim().not().isEmpty(),
+        body('uploader_username').trim().not().isEmpty(),
+        body('uploader_email').trim().not().isEmpty(),
+        body('date_uploaded').trim().not().isEmpty(),
+    ],
+    setUploadedVideosCtr
 );
 
 
