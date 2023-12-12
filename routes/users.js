@@ -20,7 +20,11 @@ import {
     saveLiveTvChannelsCtr,
     getLiveTvChannelsCtr,
     getUploadedVideosCtr,
-    setUploadedVideosCtr
+    setUploadedVideosCtr,
+    setPostLikesCtr,
+    getPostLikesCtr,
+    setPostCommentsCtr,
+    getPostCommentsCtr
 } from '../controllers/usersCtrl.js';
 
 // middleWares
