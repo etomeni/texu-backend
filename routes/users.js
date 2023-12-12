@@ -75,6 +75,44 @@ router.post(
 );
 
 
+// set Post Likes
+router.post(
+    '/setPostLikes',
+    [
+        // authMiddleware,
+        body('uploader_username').trim().not().isEmpty(),
+        body('title').trim().not().isEmpty(),
+        body('like_count').trim().not().isEmpty(),
+    ],
+    setPostLikesCtr
+);
+
+// get Post Likes
+router.post(
+    '/getPostLikes',
+    getPostLikesCtr
+);
+
+// set Post Comments
+router.post(
+    '/setPostComments',
+    [
+        // authMiddleware,
+        body('uploader_username').trim().not().isEmpty(),
+        body('title').trim().not().isEmpty(),
+        body('like_count').trim().not().isEmpty(),
+    ],
+    setPostCommentsCtr
+);
+
+// get Post Comments
+router.post(
+    '/getPostComments',
+    getPostCommentsCtr
+);
+
+
+
 // // get all services from the provider
 // router.post(
 //     '/',

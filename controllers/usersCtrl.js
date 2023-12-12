@@ -240,3 +240,232 @@ export const getUploadedVideosCtr = async (req, res, next) => {
         next(error);
     }
 }
+
+
+export const setPostLikesCtr = async (req, res, next) => {
+    try {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(500).json({
+                    status: 500,
+                    message: 'Sent Data Error!', 
+                    errors
+                });
+            };
+        } catch (error) {
+            if (!error.statusCode) {
+                error.statusCode = 500;
+            }
+            error.msg = "sent data validation error";
+            next(error);
+        }
+
+        try {
+            const postLikesDetails = {
+                uploader_username: req.body.uploader_username,
+                title: req.body.title,
+                like_count: req.body.like_count,
+                createdAt: general.getCurrentDateTime(),
+                updatedAt: general.getCurrentDateTime()
+            };
+            const result = await crud.save2FirestoreDB("postLikes", postLikesDetails);
+
+            if (!result) {
+                return res.status(202).json({
+                    status: 202,
+                    // userID: userDetails.userID,
+                    message: 'unable to save post likes!'
+                });
+            }
+            
+            return res.status(201).json({
+                status: 201,
+                id: result.id,
+                message: 'successful!'
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                status: 500,
+                message: "an error occured!",
+                error
+            });
+        }
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        error.msg = "unknown error!!!";
+        next(error);
+    }
+}
+
+export const getPostLikesCtr = async (req, res, next) => {
+    try {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(500).json({
+                    status: 500,
+                    message: 'Sent Data Error!', 
+                    errors
+                });
+            };
+        } catch (error) {
+            if (!error.statusCode) {
+                error.statusCode = 500;
+            }
+            error.msg = "sent data validation error";
+            next(error);
+        }
+
+        try {
+            const result = await crud.getOrderedServiceData("postLikes");
+
+            if (!result) {
+                return res.status(202).json({
+                    status: 202,
+                    // userID: userDetails.userID,
+                    message: 'unable get post likes!'
+                });
+            }
+
+            // this line removes all the lastVisible property from the array of object
+            const newResult = result.map(({lastVisible, ...rest}) => rest);
+            
+            return res.status(201).json({
+                status: 201,
+                data: newResult,
+                message: 'successfully!'
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                status: 500,
+                message: "an error occured!",
+                error
+            });
+        }
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        error.msg = "unknown error!!!";
+        next(error);
+    }
+}
+
+export const getPostCommentsCtr = async (req, res, next) => {
+    try {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(500).json({
+                    status: 500,
+                    message: 'Sent Data Error!', 
+                    errors
+                });
+            };
+        } catch (error) {
+            if (!error.statusCode) {
+                error.statusCode = 500;
+            }
+            error.msg = "sent data validation error";
+            next(error);
+        }
+
+        try {
+            const postCommentsDetails = {
+                uploader_username: req.body.uploader_username,
+                title: req.body.title,
+                like_count: req.body.like_count,
+                createdAt: general.getCurrentDateTime(),
+                updatedAt: general.getCurrentDateTime()
+            };
+            const result = await crud.save2FirestoreDB("postComments", postCommentsDetails);
+
+            if (!result) {
+                return res.status(202).json({
+                    status: 202,
+                    // userID: userDetails.userID,
+                    message: 'unable to save post comments!'
+                });
+            }
+            
+            return res.status(201).json({
+                status: 201,
+                id: result.id,
+                message: 'successful!'
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                status: 500,
+                message: "an error occured!",
+                error
+            });
+        }
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        error.msg = "unknown error!!!";
+        next(error);
+    }
+}
+
+export const setPostCommentsCtr = async (req, res, next) => {
+    try {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(500).json({
+                    status: 500,
+                    message: 'Sent Data Error!', 
+                    errors
+                });
+            };
+        } catch (error) {
+            if (!error.statusCode) {
+                error.statusCode = 500;
+            }
+            error.msg = "sent data validation error";
+            next(error);
+        }
+
+        try {
+            const result = await crud.getOrderedServiceData("postComments");
+            
+            if (!result) {
+                return res.status(202).json({
+                    status: 202,
+                    // userID: userDetails.userID,
+                    message: 'unable to get post comments!'
+                });
+            }
+
+            // this line removes all the lastVisible property from the array of object
+            const newResult = result.map(({lastVisible, ...rest}) => rest);
+            
+            return res.status(201).json({
+                status: 201,
+                data: newResult,
+                message: 'successfully!'
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                status: 500,
+                message: "an error occured!",
+                error
+            });
+        }
+    } catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        error.msg = "unknown error!!!";
+        next(error);
+    }
+}
